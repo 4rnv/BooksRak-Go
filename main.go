@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"encoding/json"
@@ -82,7 +82,7 @@ func renderResults(w http.ResponseWriter, books []Book) error {
 	return t.Execute(w, books)
 }
 
-func main() {
+func Handler() {
 	fmt.Println("BooksRak")
 	http.HandleFunc("/", Ichi)
 	http.HandleFunc("/search/", Ni)
@@ -96,3 +96,10 @@ func main() {
 		fmt.Println("Server running on port ", port)
 	}
 }
+
+// Vercel wants me to rename package main to package handler.
+// Also the start file can only be named main.go.
+// But you can't name the main function as func main BECAUSE YOU JUST CAN'T OKAY.
+// package handler -> func Handler()
+// Also you need to make a go.mod file for module management.
+// Also all exported functions must have capital names.
