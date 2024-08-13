@@ -1,6 +1,6 @@
-// package handler
+package handler
 
-package main
+// package main
 
 import (
 	"encoding/json"
@@ -93,8 +93,8 @@ func renderResults(w http.ResponseWriter, books []Book) error {
 	return t.Execute(w, books)
 }
 
-// func Handler() {
-func main() {
+func Handler() {
+	// func main() {
 	fmt.Println("BooksRak")
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	http.HandleFunc("/", Ichi)
