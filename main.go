@@ -39,9 +39,9 @@ func ReadJson(filename string) ([]Book, error) {
 }
 
 func Ichi(w http.ResponseWriter, r *http.Request) {
-	books, _ := ReadJson("books.json")
+	books, _ := ReadJson("./books.json")
 	//fmt.Println(books)
-	plate := template.Must(template.ParseFiles("booksrak.html"))
+	plate := template.Must(template.ParseFiles("./booksrak.html"))
 	plate.Execute(w, books)
 }
 
@@ -50,7 +50,7 @@ func Ni(w http.ResponseWriter, r *http.Request) {
 	query := r.PostFormValue("search-query")
 	fmt.Println(query)
 
-	books, _ := ReadJson("books.json")
+	books, _ := ReadJson("./books.json")
 	var results []Book
 	for _, book := range books {
 		if (strings.Contains(strings.ToLower(book.Author_name), strings.ToLower(query))) || (strings.Contains(strings.ToLower(book.Book_name), strings.ToLower(query))) {
