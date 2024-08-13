@@ -1,5 +1,7 @@
 package handler
 
+// package main
+
 import (
 	"encoding/json"
 	"fmt"
@@ -7,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -27,7 +30,14 @@ type Book struct {
 }
 
 func ReadJson(filename string) ([]Book, error) {
-	byteValue, err := os.ReadFile(filename)
+	cwd, err := os.Getwd()
+	if err != nil {
+		return nil, err
+	}
+	fullPath := filepath.Join(cwd, filename)
+
+	byteValue, err := os.ReadFile(fullPath)
+	//byteValue, err := os.ReadFile(filename)
 	var books []Book
 	if err != nil {
 		fmt.Println(err)
@@ -39,9 +49,9 @@ func ReadJson(filename string) ([]Book, error) {
 }
 
 func Ichi(w http.ResponseWriter, r *http.Request) {
-	books, _ := ReadJson("./books.json")
+	books, _ := ReadJson("books.json")
 	//fmt.Println(books)
-	plate := template.Must(template.ParseFiles("./booksrak.html"))
+	plate := template.Must(template.ParseFiles("booksrak.html"))
 	plate.Execute(w, books)
 }
 
@@ -50,7 +60,7 @@ func Ni(w http.ResponseWriter, r *http.Request) {
 	query := r.PostFormValue("search-query")
 	fmt.Println(query)
 
-	books, _ := ReadJson("./books.json")
+	books, _ := ReadJson("books.json")
 	var results []Book
 	for _, book := range books {
 		if (strings.Contains(strings.ToLower(book.Author_name), strings.ToLower(query))) || (strings.Contains(strings.ToLower(book.Book_name), strings.ToLower(query))) {
@@ -83,6 +93,7 @@ func renderResults(w http.ResponseWriter, books []Book) error {
 }
 
 func Handler() {
+	// func main() {
 	fmt.Println("BooksRak")
 	http.HandleFunc("/", Ichi)
 	http.HandleFunc("/search/", Ni)
