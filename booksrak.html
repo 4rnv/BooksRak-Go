@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/htmx.org@2.0.1" integrity="sha384-QWGpdj554B4ETpJJC9z+ZHJcA/i59TyjxEPXiiUgN2WmTyV5OEZWCD6gQhgkdpB/" crossorigin="anonymous"></script>
+    <link href='https://fonts.googleapis.com/css?family=Playfair Display' rel='stylesheet'>
+    <title>BooksRak</title>
+    <style>
+        body {
+            font-family: 'Playfair Display', 'Times New Roman', serif;
+            font-weight: 100;
+            background-color: rgb(0, 0, 0);
+            color: #ccc;
+            text-align: center;
+        }
+        h2, p {
+            margin: 0;
+        }
+        input {
+            appearance: none;
+            -moz-appearance: none;
+            border-radius: 0;
+            border: 1px solid pink;
+            background: #fff1;
+            padding: 1rem 0.5rem;
+            color: inherit;
+        }
+        .book {
+            display: flex;
+            flex-direction: column;
+            justify-content:space-between;
+            border: 1px solid pink;
+            margin: 1rem;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <form hx-post="/search/" hx-target="#book-list">
+        <input type="text" name="search-query" id="search" placeholder="Search">
+    </form>
+    
+    <h1>BooksRak</h1>
+    <div id="book-list">
+    {{ range . }}
+    <div class="book">
+    <h2>{{.Book_name}}</h2>
+    <p>Author: {{.Author_name}}</p>
+    <p>Year: {{.Year_pub}}</p>
+    <p>Rating: {{.Avg_rating}}</p>
+    <img src="{{ .Img_url}}" alt="" height="200" width="100">
+    </div>
+    {{ end }}
+    </div>
+    
+</body>
+</html>
