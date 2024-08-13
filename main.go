@@ -50,9 +50,9 @@ func ReadJson(filename string) ([]Book, error) {
 }
 
 func Ichi(w http.ResponseWriter, r *http.Request) {
-	books, _ := ReadJson("static/books.json")
+	books, _ := ReadJson("public/books.json")
 	//fmt.Println(books)
-	plate := template.Must(template.ParseFiles("static/booksrak.html"))
+	plate := template.Must(template.ParseFiles("public/booksrak.html"))
 	plate.Execute(w, books)
 }
 
@@ -61,7 +61,7 @@ func Ni(w http.ResponseWriter, r *http.Request) {
 	query := r.PostFormValue("search-query")
 	fmt.Println(query)
 
-	books, _ := ReadJson("static/books.json")
+	books, _ := ReadJson("public/books.json")
 	var results []Book
 	for _, book := range books {
 		if (strings.Contains(strings.ToLower(book.Author_name), strings.ToLower(query))) || (strings.Contains(strings.ToLower(book.Book_name), strings.ToLower(query))) {
@@ -96,7 +96,7 @@ func renderResults(w http.ResponseWriter, books []Book) error {
 func Handler() {
 	// func main() {
 	fmt.Println("BooksRak")
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 	http.HandleFunc("/", Ichi)
 	http.HandleFunc("/search/", Ni)
 	port := ":8800"
