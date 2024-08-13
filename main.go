@@ -9,7 +9,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
 	"strings"
 )
 
@@ -30,11 +29,12 @@ type Book struct {
 }
 
 func ReadJson(filename string) ([]Book, error) {
-	cwd, err := os.Getwd()
-	if err != nil {
-		return nil, err
-	}
-	fullPath := filepath.Join(cwd, filename)
+	fullPath := filename
+	// cwd, err := os.Getwd()
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// fullPath := filepath.Join(cwd, filename)
 
 	byteValue, err := os.ReadFile(fullPath)
 	fmt.Printf("Attempting to read file: %s\n", fullPath) // Debugging output
