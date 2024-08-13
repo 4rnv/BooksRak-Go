@@ -1,6 +1,6 @@
-package handler
+// package handler
 
-// package main
+package main
 
 import (
 	"encoding/json"
@@ -37,6 +37,7 @@ func ReadJson(filename string) ([]Book, error) {
 	fullPath := filepath.Join(cwd, filename)
 
 	byteValue, err := os.ReadFile(fullPath)
+	fmt.Printf("Attempting to read file: %s\n", fullPath) // Debugging output
 	//byteValue, err := os.ReadFile(filename)
 	var books []Book
 	if err != nil {
@@ -49,9 +50,9 @@ func ReadJson(filename string) ([]Book, error) {
 }
 
 func Ichi(w http.ResponseWriter, r *http.Request) {
-	books, _ := ReadJson("books.json")
+	books, _ := ReadJson("static/books.json")
 	//fmt.Println(books)
-	plate := template.Must(template.ParseFiles("booksrak.html"))
+	plate := template.Must(template.ParseFiles("static/booksrak.html"))
 	plate.Execute(w, books)
 }
 
@@ -60,7 +61,7 @@ func Ni(w http.ResponseWriter, r *http.Request) {
 	query := r.PostFormValue("search-query")
 	fmt.Println(query)
 
-	books, _ := ReadJson("books.json")
+	books, _ := ReadJson("static/books.json")
 	var results []Book
 	for _, book := range books {
 		if (strings.Contains(strings.ToLower(book.Author_name), strings.ToLower(query))) || (strings.Contains(strings.ToLower(book.Book_name), strings.ToLower(query))) {
@@ -92,12 +93,12 @@ func renderResults(w http.ResponseWriter, books []Book) error {
 	return t.Execute(w, books)
 }
 
-func Handler() {
-	// func main() {
+// func Handler() {
+func main() {
 	fmt.Println("BooksRak")
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	http.HandleFunc("/", Ichi)
 	http.HandleFunc("/search/", Ni)
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	port := ":8800"
 	err := http.ListenAndServe(port, nil)
 	if err != nil {
