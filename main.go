@@ -71,7 +71,6 @@ func renderResults(w http.ResponseWriter, books []Book) error {
     <p>Author: {{.Author_name}}</p>
     <p>Year: {{.Year_pub}}</p>
     <p>Rating: {{.Avg_rating}}</p>
-	<img src="{{ .Img_url}}" alt="" height="200" width="100">
     </div>
     {{ end }}`
 
@@ -87,6 +86,7 @@ func main() {
 	fmt.Println("BooksRak")
 	http.HandleFunc("/", ichi)
 	http.HandleFunc("/search/", ni)
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	port := ":8800"
 	err := http.ListenAndServe(port, nil)
 	if err != nil {

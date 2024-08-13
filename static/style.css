@@ -1,0 +1,28 @@
+body {
+    font-family: 'Playfair Display', 'Times New Roman', serif;
+    font-weight: 100;
+    background-color: rgb(0, 0, 0);
+    color: #ccc;
+    text-align: center;
+}
+h2, p {
+    margin: 0;
+}
+input {
+    appearance: none;
+    -moz-appearance: none;
+    width: 80%;
+    border-radius: 0;
+    border: 1px solid pink;
+    background: #fff1;
+    padding: 1rem 0.5rem;
+    color: inherit;
+}
+.book {
+    display: flex;
+    flex-direction: column;
+    justify-content:space-between;
+    border: 1px solid pink;
+    margin: 1rem;
+    padding: 1rem;
+}
