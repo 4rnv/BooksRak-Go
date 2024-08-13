@@ -26,7 +26,7 @@ type Book struct {
 	Year_pub      string  `json:"year_pub"`
 }
 
-func readjson(filename string) ([]Book, error) {
+func ReadJson(filename string) ([]Book, error) {
 	byteValue, err := os.ReadFile(filename)
 	var books []Book
 	if err != nil {
@@ -38,19 +38,19 @@ func readjson(filename string) ([]Book, error) {
 	return books, nil
 }
 
-func ichi(w http.ResponseWriter, r *http.Request) {
-	books, _ := readjson("books.json")
+func Ichi(w http.ResponseWriter, r *http.Request) {
+	books, _ := ReadJson("books.json")
 	//fmt.Println(books)
 	plate := template.Must(template.ParseFiles("booksrak.html"))
 	plate.Execute(w, books)
 }
 
-func ni(w http.ResponseWriter, r *http.Request) {
+func Ni(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("HTMX Post was triggered.", r.Header.Get("HX-Request"))
 	query := r.PostFormValue("search-query")
 	fmt.Println(query)
 
-	books, _ := readjson("books.json")
+	books, _ := ReadJson("books.json")
 	var results []Book
 	for _, book := range books {
 		if (strings.Contains(strings.ToLower(book.Author_name), strings.ToLower(query))) || (strings.Contains(strings.ToLower(book.Book_name), strings.ToLower(query))) {
@@ -84,8 +84,8 @@ func renderResults(w http.ResponseWriter, books []Book) error {
 
 func main() {
 	fmt.Println("BooksRak")
-	http.HandleFunc("/", ichi)
-	http.HandleFunc("/search/", ni)
+	http.HandleFunc("/", Ichi)
+	http.HandleFunc("/search/", Ni)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	port := ":8800"
 	err := http.ListenAndServe(port, nil)
