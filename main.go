@@ -8,8 +8,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-
-	"github.com/joho/godotenv"
 )
 
 type Book struct {
@@ -89,14 +87,7 @@ func main() {
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 	http.HandleFunc("/", Ichi)
 	http.HandleFunc("/search/", Ni)
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8000"
-	}
+	port := "8000"
 	log.Println("Listening on port", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
 
