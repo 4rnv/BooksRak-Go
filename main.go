@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/joho/godotenv"
 )
 
 type Book struct {
@@ -84,16 +86,18 @@ func renderResults(w http.ResponseWriter, books []Book) error {
 }
 
 func main() {
-	fmt.Println("BooksRak")
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 	http.HandleFunc("/", Ichi)
 	http.HandleFunc("/search/", Ni)
-	port := ":8080"
-	err := http.ListenAndServe(port, nil)
+	err := godotenv.Load()
 	if err != nil {
-		fmt.Println("Error running server", err)
-		log.Fatal(err)
-	} else {
-		fmt.Println("Server running on port ", port)
+		log.Fatal("Error loading .env file")
 	}
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8000"
+	}
+	log.Println("Listening on port", port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
+
 }
