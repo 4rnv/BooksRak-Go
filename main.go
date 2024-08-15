@@ -88,7 +88,7 @@ func main() {
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 	http.HandleFunc("/", Ichi)
 	http.HandleFunc("/search/", Ni)
-	port := ":8800"
+	port := ":8080"
 	err := http.ListenAndServe(port, nil)
 	if err != nil {
 		fmt.Println("Error running server", err)
